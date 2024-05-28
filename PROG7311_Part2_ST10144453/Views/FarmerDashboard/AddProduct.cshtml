@@ -1,0 +1,26 @@
+﻿@model PROG7311_Part2_ST10144453.Models.Domain.Product
+
+<form method="post" asp-action="AddProduct" asp-controller="FarmerDashboard">
+    <input type="hidden" name="FarmerId" value="@ViewBag.FarmerId" />
+    <div class="form-group">
+        <label for="productName">Product Name:</label>
+        <input type="text" class="form-control" id="productName" name="ProductName" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" name="Description" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" class="form-control" id="price" name="Price" step="0.01" required>
+    </div>
+    <div class="form-group">
+        <label for="category">Category:</label>
+        <input type="text" class="form-control" id="category" name="Category" required>
+    </div>
+    <div class="form-group">
+        <label for="productionDate">Production Date:</label>
+        <input type="date" class="form-control" id="productionDate" name="ProductionDate" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -1,0 +1,42 @@
+﻿<form method="post" enctype="multipart/form-data">
+    <input type="hidden" name="productId" value="@Model" />
+    <div class="form-group">
+        <label for="photos">Upload Photos:</label>
+        <input type="file" name="photos" id="photos" class="form-control-file" multiple>
+    </div>
+    <div id="preview"></div> <!-- Added a div to display the preview of uploaded photos -->
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
+<script>
+    // Function to display the preview of uploaded photos
+    function previewPhotos() {
+        var previewDiv = document.getElementById("preview");
+        var fileInput = document.getElementById("photos");
+        var files = fileInput.files;
+
+        // Clear the preview div
+        previewDiv.innerHTML = "";
+
+        // Loop through the selected files and create image elements to display the preview
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var img = document.createElement("img");
+                img.src = e.target.result;
+                img.style.width = "200px"; // Set the width of the preview image
+                img.addEventListener("click", function() {
+                    this.remove(); // Remove the clicked image from being uploaded
+                });
+                previewDiv.appendChild(img);
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Call the previewPhotos function when a file is selected
+    document.getElementById("photos").addEventListener("change", previewPhotos);
+</script>

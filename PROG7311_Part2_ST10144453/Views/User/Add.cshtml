@@ -1,0 +1,32 @@
+﻿<form asp-action="Add" asp-controller="User" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="Email">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1" name="Password">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputName" class="form-label">Name</label>
+        <input type="text" class="form-control" id="exampleInputName" name="Name">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputSurname" class="form-label">Surname</label>
+        <input type="text" class="form-control" id="exampleInputSurname" name="Surname">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputProfilePhoto" class="form-label">Profile Photo</label>
+        <input type="file" accept="image/*" class="form-control" id="exampleInputProfilePhoto" name="profilePhotoUpload">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputAccountType" class="form-label">Account Type</label>
+        <select class="form-select" id="exampleInputAccountType" name="AccountType">
+            <option value="Staff Member">Staff Member</option>
+            <option value="Farmer">Farmer</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

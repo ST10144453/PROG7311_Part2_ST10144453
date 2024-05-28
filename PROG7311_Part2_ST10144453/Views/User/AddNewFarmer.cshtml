@@ -1,0 +1,24 @@
+﻿@model PROG7311_Part2_ST10144453.Models.Domain.Farmer
+
+@{
+    ViewData["Title"] = "Add New Farmer";
+}
+
+<h1>Add New Farmer</h1>
+
+<form asp-action="AddNewFarmer" method="post">
+    <div>
+        <label for="FarmName">Farm Name</label>
+        <input type="text" id="FarmName" name="FarmName" />
+    </div>
+    <div>
+        <label for="Specialty">Specialty</label>
+        <input type="text" id="Specialty" name="Specialty" />
+    </div>
+    <div>
+        <label for="About">About</label>
+        <input type="text" id="About" name="About" />
+    </div>
+    <input type="hidden" name="UserID" value="@ViewBag.UserId" />
+    <button type="submit">Add Farmer</button>
+</form>
