@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PROG7311_Part2_ST10144453.Data;
 
@@ -11,9 +12,10 @@ using PROG7311_Part2_ST10144453.Data;
 namespace PROG7311_Part2_ST10144453.Migrations
 {
     [DbContext(typeof(Part2DbContext))]
-    partial class Part2DbContextModelSnapshot : ModelSnapshot
+    [Migration("20240530080946_ProductPhotosInProduct")]
+    partial class ProductPhotosInProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,22 +88,27 @@ namespace PROG7311_Part2_ST10144453.Migrations
                         .HasColumnName("product_name");
 
                     b.Property<string>("photo1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("photo_1");
 
                     b.Property<string>("photo2")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("photo_2");
 
                     b.Property<string>("photo3")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("photo_3");
 
                     b.Property<string>("photo4")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("photo_4");
 
                     b.Property<string>("photo5")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("photo_5");
 

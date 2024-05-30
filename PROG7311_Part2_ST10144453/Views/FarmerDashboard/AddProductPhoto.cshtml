@@ -1,5 +1,5 @@
 ﻿<form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="productId" value="@Model" />
+    <input type="hidden" name="productId" value="@Model.ProductId" /> <!-- Pass the productId as a hidden input -->
     <div class="form-group">
         <label for="photos">Upload Photos:</label>
         <input type="file" name="photos" id="photos" class="form-control-file" multiple>
@@ -27,7 +27,7 @@
                 var img = document.createElement("img");
                 img.src = e.target.result;
                 img.style.width = "200px"; // Set the width of the preview image
-                img.addEventListener("click", function() {
+                img.addEventListener("click", function () {
                     this.remove(); // Remove the clicked image from being uploaded
                 });
                 previewDiv.appendChild(img);

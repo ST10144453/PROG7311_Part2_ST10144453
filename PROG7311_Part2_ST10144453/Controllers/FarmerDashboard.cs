@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PROG7311_Part2_ST10144453.Data;
 using PROG7311_Part2_ST10144453.Models.Domain;
+using PROG7311_Part2_ST10144453.ViewModels;
 
 namespace PROG7311_Part2_ST10144453.Controllers
 {
@@ -17,78 +18,121 @@ namespace PROG7311_Part2_ST10144453.Controllers
         public async Task<IActionResult> FarmerDash(Guid userId)
         {
             // Fetch the farmer from the database using the user's ID.
-            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserID == userId);
-
-            // Pass the farmer to the view.
-            return View(farmer);
-        }
-
-
-        [HttpPost]
-        public IActionResult AddProduct(Product product)
-        {
-            // Check if the farmer exists in the database.
-            var farmer = _context.Farmers.Find(product.FarmerId);
+            var farmer = await _context.Farmers
+                .FirstOrDefaultAsync(f => f.UserID == userId);
 
             if (farmer == null)
             {
-                // If the farmer doesn't exist, display an error message.
+                // Handle the case where the farmer is not found.
+                ViewBag.ErrorMessage = "Farmer not found.";
+                return View("Error");
+            }
+
+            // Fetch the products associated with the farmer
+            var products = await _context.Products
+                .Where(p => p.FarmerId == farmer.FarmerId)
+                .ToListAsync();
+
+            // Create a view model to pass both UserId and FarmerId to the view.
+            var viewModel = new FarmerDashboardViewModel
+            {
+                UserId = userId,
+                FarmerId = farmer.FarmerId,
+                Farmer = farmer,
+                Products = products // Set the Products property
+            };
+
+            // Pass the view model to the view.
+            return View(viewModel);
+        }
+
+
+
+
+        [HttpGet]
+        public IActionResult AddProduct(Guid farmerId)
+        {
+            // Create a new Product and set the FarmerId
+            var product = new Product
+            {
+                FarmerId = farmerId
+            };
+
+            // Pass the product to the view
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(Product product, List<IFormFile> photos)
+        {
+            // Ensure the FarmerId is valid
+            if (product.FarmerId == Guid.Empty)
+            {
+                Console.WriteLine("Invalid Farmer ID.");
+                return View(product);
+            }
+
+            // Verify if the farmer exists
+            var farmer = await _context.Farmers.FindAsync(product.FarmerId);
+            if (farmer == null)
+            {
                 Console.WriteLine("The specified farmer doesn't exist.");
-                return View("AddProduct");
+                return View(product);
             }
 
             try
             {
-                // Add the product to the database.
-                _context.Products.Add(product);
-                _context.SaveChanges();
+                int photoCount = 1; // Counter for tracking the photo number
+                foreach (var photo in photos)
+                {
+                    if (photo.Length > 0)
+                    {
+                        byte[] photoBytes;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await photo.CopyToAsync(memoryStream);
+                            photoBytes = memoryStream.ToArray();
+                        }
 
-                // Redirect to the AddProductPhoto view.
-                return View("AddProductPhoto", new { productId = product.ProductId });
+                        // Convert the byte array to a Base64 string
+                        string photoBase64 = Convert.ToBase64String(photoBytes);
+
+                        // Determine the photo property to set based on the photoCount
+                        var photoProperty = typeof(Product).GetProperty($"photo{photoCount}");
+                        if (photoProperty != null)
+                        {
+                            photoProperty.SetValue(product, photoBase64);
+                            photoCount++;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Maximum number of photos reached. Ignoring additional photos.");
+                            break;
+                        }
+                    }
+                }
+
+                // Add the product to the database
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+
+                // Redirect to the FarmerDash action with the userId
+                return RedirectToAction("FarmerDash", new { userId = farmer.UserID });
             }
             catch (Exception ex)
             {
-                // Handle the exception and display an error message.
-                Console.WriteLine(ex.InnerException.Message);
-                return View("AddProduct");
+                ViewBag.ErrorMessage = ex.Message;
+                return View(product);
             }
         }
 
-
         [HttpGet]
-        public IActionResult AddProductPhoto()
+        public IActionResult FarmerSettings()
         {
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddProductPhoto(Guid productId, List<IFormFile> photos)
-        {
-            foreach (var photo in photos)
-            {
-                if (photo.Length > 0)
-                {
-                    using var memoryStream = new MemoryStream();
-                    await photo.CopyToAsync(memoryStream);
-
-                    // Convert the MemoryStream to a byte array.
-                    var photoBytes = memoryStream.ToArray();
-
-                    var productPhoto = new ProductPhoto
-                    {
-                        ProductPhotoId = Guid.NewGuid(),
-                        Photo = Convert.ToBase64String(photoBytes), // Convert byte array to string
-                        ProductId = productId
-                    };
-
-                    _context.ProductPhotos.Add(productPhoto);
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("FarmerDash");
-        }
 
     }
+
 }

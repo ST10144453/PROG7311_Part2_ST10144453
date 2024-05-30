@@ -22,6 +22,16 @@ namespace PROG7311_Part2_ST10144453.Models.Domain
         public DateTime productionDate { get; set; }
         [Column("farmer_id")]
         public Guid FarmerId { get; set; }
+        [Column("photo_1")]
+        public string? photo1 { get; set; }
+        [Column("photo_2")]
+        public string? photo2 { get; set; }
+        [Column("photo_3")]
+        public string? photo3 { get; set; }
+        [Column("photo_4")]
+        public string? photo4 { get; set; }
+        [Column("photo_5")]
+        public string? photo5 { get; set; }
         public Farmer Farmer { get; set; }
     }
 }
