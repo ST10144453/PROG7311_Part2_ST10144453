@@ -66,7 +66,7 @@ namespace PROG7311_Part2_ST10144453.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Login(string email, string password)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email.Equals(email) && u.Password.Equals(password));
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(email) && u.Password.Equals(password));
 
             if (user != null)
             {
