@@ -17,6 +17,17 @@ namespace PROG7311_Part2_ST10144453.Controllers
 
         public async Task<IActionResult> FarmerDash(Guid userId)
         {
+            // Fetch the user from the database using the user's ID.
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId == userId);
+
+            if (user == null)
+            {
+                // Handle the case where the user is not found.
+                ViewBag.ErrorMessage = "User not found.";
+                return View("Error");
+            }
+
             // Fetch the farmer from the database using the user's ID.
             var farmer = await _context.Farmers
                 .FirstOrDefaultAsync(f => f.UserID == userId);
@@ -37,6 +48,7 @@ namespace PROG7311_Part2_ST10144453.Controllers
             var viewModel = new FarmerDashboardViewModel
             {
                 UserId = userId,
+                User = user,
                 FarmerId = farmer.FarmerId,
                 Farmer = farmer,
                 Products = products // Set the Products property
@@ -127,10 +139,157 @@ namespace PROG7311_Part2_ST10144453.Controllers
         }
 
         [HttpGet]
-        public IActionResult FarmerSettings()
+        public async Task<IActionResult> FarmerSettings(Guid userId)
         {
-            return View();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserID == userId);
+
+            if (user == null || farmer == null)
+            {
+                ViewBag.ErrorMessage = "User or Farmer not found.";
+                return View("Error");
+            }
+
+            var viewModel = new EditFarmerProfileViewModel
+            {
+                User = user,
+                Farmer = farmer
+            };
+
+            return View(viewModel);
         }
+
+        
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditProduct(Guid productId)
+        {
+            // Fetch the product from the database using the product's ID.
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.ProductId == productId);
+
+            if (product == null)
+            {
+                // Handle the case where the product is not found.
+                ViewBag.ErrorMessage = "Product not found.";
+                return View("Error");
+            }
+
+            // Pass the product to the view.
+            return View(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FarmerSettings(EditFarmerProfileViewModel viewModel, IFormFile ProfilePhoto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == viewModel.User.UserId);
+            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserID == viewModel.User.UserId);
+
+            if (ProfilePhoto != null && ProfilePhoto.Length > 0)
+            {
+                byte[] photoBytes;
+                using (var memoryStream = new MemoryStream())
+                {
+                    await ProfilePhoto.CopyToAsync(memoryStream);
+                    photoBytes = memoryStream.ToArray();
+                }
+
+                string photoBase64 = Convert.ToBase64String(photoBytes);
+                viewModel.User.ProfilePhoto = photoBase64;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState.Values)
+                {
+                    foreach (var error in state.Errors)
+                    {
+                        Console.WriteLine("ModelState Error: " + error.ErrorMessage);
+                    }
+                }
+                return View(viewModel);
+            }
+
+            
+
+            if (user == null || farmer == null)
+            {
+                ViewBag.ErrorMessage = "User or Farmer not found.";
+                return View("Error");
+            }
+
+            try
+            {
+                user.Name = viewModel.User.Name;
+                user.Surname = viewModel.User.Surname;
+                user.Email = viewModel.User.Email;
+                user.Password = viewModel.User.Password;
+                user.AccountType = viewModel.User.AccountType;
+                user.ProfilePhoto = viewModel.User.ProfilePhoto;
+
+                farmer.FarmName = viewModel.Farmer.FarmName;
+                farmer.Specialty = viewModel.Farmer.Specialty;
+                farmer.About = viewModel.Farmer.About;
+
+                _context.Users.Update(user);
+                _context.Farmers.Update(farmer);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return View(viewModel);
+            }
+
+            return RedirectToAction("FarmerDash", new { userId = user.UserId });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteFarmer(Guid userId)
+        {
+            // Find the user and farmer in the database
+            var user = await _context.Users.FindAsync(userId);
+            var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.UserID == userId);
+
+            if (user == null || farmer == null)
+            {
+                // Handle the case where the user or farmer is not found
+                ViewBag.ErrorMessage = "User or Farmer not found.";
+                return View("Error");
+            }
+
+            // Remove the user and farmer from the database
+            _context.Users.Remove(user);
+            _context.Farmers.Remove(farmer);
+            await _context.SaveChangesAsync();
+
+            // Redirect to the Home action
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteProduct(Guid productId)
+        {
+            // Find the product in the database and include the Farmer
+            var product = await _context.Products.Include(p => p.Farmer).FirstOrDefaultAsync(p => p.ProductId == productId);
+            if (product == null)
+            {
+                // Handle the case where the product is not found
+                ViewBag.ErrorMessage = "Product not found.";
+                return View("Error");
+            }
+
+            // Remove the product from the database
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            // Redirect to the FarmerDash action
+            return RedirectToAction("FarmerDash", new { userId = product.Farmer.UserID });
+        }
+
+
 
 
     }

@@ -1,12 +1,12 @@
-﻿@model PROG7311_Part2_ST10144453.ViewModels.EditFarmerProfileViewModel
+﻿@model PROG7311_Part2_ST10144453.ViewModels.EditStaffProfileViewModel
 
 @{
-    ViewData["Title"] = "Edit Farmer Profile";
+    ViewData["Title"] = "Edit Staff Profile";
 }
 
 <h2>Edit Farmer Profile</h2>
 
-<form method="post" asp-action="FarmerSettings" asp-controller="FarmerDashboard" enctype="multipart/form-data">
+<form method="post" asp-action="StaffSettings" asp-controller="StaffDashobaord" enctype="multipart/form-data">
     <div class="form-group">
         <label asp-for="User.Name" class="control-label"></label>
         <input asp-for="User.Name" class="form-control" />
@@ -27,21 +27,7 @@
         <input asp-for="User.Password" class="form-control" />
         <span asp-validation-for="User.Password" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Farmer.FarmName" class="control-label"></label>
-        <input asp-for="Farmer.FarmName" class="form-control" />
-        <span asp-validation-for="Farmer.FarmName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Farmer.Specialty" class="control-label"></label>
-        <input asp-for="Farmer.Specialty" class="form-control" />
-        <span asp-validation-for="Farmer.Specialty" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Farmer.About" class="control-label"></label>
-        <textarea asp-for="Farmer.About" class="form-control"></textarea>
-        <span asp-validation-for="Farmer.About" class="text-danger"></span>
-    </div>
+   
     <div class="form-group">
         <label asp-for="User.ProfilePhoto" class="control-label"></label>
         <input name="ProfilePhoto" asp-for="User.ProfilePhoto" class="form-control" type="file" />
@@ -49,7 +35,7 @@
     </div>
 
     <input type="hidden" asp-for="User.UserId" />
-    <input type="hidden" asp-for="Farmer.FarmerId" />
+    <input type="hidden" asp-for="Staff.StaffId" />
     <input type="hidden" asp-for="User.AccountType" value="Farmer" />
 
     <button type="submit" class="btn btn-primary">Save</button>

@@ -1,32 +1,110 @@
-﻿<form asp-action="Add" asp-controller="User" method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="Email">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" name="Password">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputName" class="form-label">Name</label>
-        <input type="text" class="form-control" id="exampleInputName" name="Name">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputSurname" class="form-label">Surname</label>
-        <input type="text" class="form-control" id="exampleInputSurname" name="Surname">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputProfilePhoto" class="form-label">Profile Photo</label>
-        <input type="file" accept="image/*" class="form-control" id="exampleInputProfilePhoto" name="profilePhotoUpload">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputAccountType" class="form-label">Account Type</label>
-        <select class="form-select" id="exampleInputAccountType" name="AccountType">
-            <option value="Staff Member">Staff Member</option>
-            <option value="Farmer">Farmer</option>
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Agri-Energy Connect</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Custom Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+</head>
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+            <div class="container px-5">
+                <a class="navbar-brand" href="index.html"><span class="fw-bolder text-primary">Agri-Energy Connect</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Login">Login</a></li>
+\                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <section class="py-5">
+            <div class="container px-5">
+                <!-- Contact form-->
+                <div class="bg-light rounded-4 py-5 px-4 px-md-5">
+                    <div class="text-center mb-5">
+                        <div class="feature bg-primary bg-gradient-primary-to-secondary text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
+                        <h1 class="fw-bolder">Get in touch</h1>
+                        <p class="lead fw-normal text-muted mb-0">Let's work together!</p>
+                    </div>
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-8 col-xl-6">
+                            <form asp-action="Add" asp-controller="User" method="post" enctype="multipart/form-data">
+                                <!-- Email address input-->
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="Email" style="border-radius: 10px;" />
+                                    <label for="exampleInputEmail1">Email address</label>
+                                </div>
+                                <!-- Password input-->
+                                <div class="form-floating mb-3">
+                                    <input type="password" class="form-control" id="exampleInputPassword1" name="Password" style="border-radius: 10px;" />
+                                    <label for="exampleInputPassword1">Password</label>
+                                </div>
+                                <!-- Name input-->
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="exampleInputName" name="Name" style="border-radius: 10px;" />
+                                    <label for="exampleInputName">Name</label>
+                                </div>
+                                <!-- Surname input-->
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="exampleInputSurname" name="Surname" style="border-radius: 10px;" />
+                                    <label for="exampleInputSurname">Surname</label>
+                                </div>
+                                <!-- Profile Photo input-->
+                                <div class="form-floating mb-3">
+                                    <input type="file" accept="image/*" class="form-control" id="exampleInputProfilePhoto" name="profilePhotoUpload" style="border-radius: 10px;" />
+                                    <label for="exampleInputProfilePhoto">Profile Photo</label>
+                                </div>
+                                <!-- Account Type input-->
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="exampleInputAccountType" name="AccountType" style="border-radius: 10px;">
+                                        <option value="Staff Member">Staff Member</option>
+                                        <option value="Farmer">Farmer</option>
+                                    </select>
+                                    <label for="exampleInputAccountType">Account Type</label>
+                                </div>
+                                <!-- Submit Button-->
+                                <div class="d-grid">
+                                    <button class="btn btn-primary btn-lg" type="submit" style="background-color: #068844; border-radius: 10px;">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer-->
+    <footer class="bg-white py-4 mt-auto">
+        <div class="container px-5">
+            <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                <div class="col-auto">
+                    <div class="small m-0">Made with &#x2764; by Anneme Holzhausen</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

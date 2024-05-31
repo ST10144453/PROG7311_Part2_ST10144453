@@ -41,7 +41,7 @@ namespace PROG7311_Part2_ST10144453.Controllers
             {
                 if (user.AccountType == "Staff Member")
                 {
-                    return RedirectToAction("StaffDash", "StaffDashboard", new { userId = user.UserId });
+                    return RedirectToAction("StaffDash", "StaffDashboard", new { email = user.Email });
                 }
                 else if (user.AccountType == "Farmer")
                 {

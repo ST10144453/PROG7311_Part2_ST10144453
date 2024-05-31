@@ -1,8 +1,191 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model PROG7311_Part2_ST10144453.ViewModels.StaffDashboardViewModel
 @{
+    Layout = null;
 }
 
-<img src="data:image/jpeg;base64,@Model.ProfilePhoto" alt="Profile Photo" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Modern Business - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Custom Google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/css/styles.css" rel="stylesheet" />
+</head>
+<body class="d-flex flex-column h-100 bg-light">
+    <main class="flex-shrink-0">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+            <div class="container px-5">
+                <a class="navbar-brand" href="index.html"><span class="fw-bolder text-primary">Agri-Energy Connect</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 small fw-bolder">
+                        <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Add">Add User</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="py-3">
+            <div class="container px-5 mb-5">
+                <!-- Profile Card -->
+                <!-- Profile Card -->
+                <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
+                    <div class="row g-0">
+                        <div class="col-md-4 d-flex align-items-center justify-content-center" style="height: 400px;">
+                            <!-- Profile Photo -->
+                            <img src="data:image/jpeg;base64,@Model.User.ProfilePhoto" alt="Profile Photo" class="img-fluid rounded-circle" style="width: 300px; height: 300px; object-fit: cover;" />
+                        </div>
+                        <div class="col-md-8 p-5">
+                            <!-- Profile Information -->
+                            <h2 class="fw-bolder">@Model.User.Name @Model.User.Surname</h2>
+                            <p><strong>Account Type:</strong> @Model.User.AccountType</p>
+
+
+                            <!-- Edit and Delete Icons -->
+                            <div class="position-absolute top-1 end-0 p-3">
+                                <form method="get" asp-action="StaffSettings" asp-controller="FarmerDashboard" class="d-inline">
+                                    <input type="hidden" name="userId" value="@Model.User.UserId" />
+                                    <button type="submit" class="btn p-0 border-0 bg-transparent">
+                                        <img src="~/assets/icon_edit.png" alt="Edit Icon" width="20" height="20" />
+                                    </button>
+                                </form>
+                                <form method="post" asp-action="DeleteFarmer" asp-controller="FarmerDashboard" class="d-inline">
+                                    <input type="hidden" name="userId" value="@Model.User.UserId" />
+                                    <button type="submit" class="btn p-0 border-0 bg-transparent">
+                                        <img src="~/assets/icon_delete.png" alt="Delete Icon" width="20" height="20" />
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Projects Section-->
+        <section class="py-1">
+            <div class="container px-5 mb-5">
+                <div class="text-center mb-5">
+                    <h1 class="display-5 fw-bolder mb-0"><span class="text-gradient d-inline">Projects</span></h1>
+                </div>
+                <div class="row gx-5 justify-content-center">
+                    <div class="col-lg-11 col-xl-9 col-xxl-8">
+
+                        @foreach (var product in Model.Products)
+                        {
+                            <!-- Project Card -->
+                            <div class="card overflow-hidden shadow rounded-4 border-0 mb-5 position-relative">
+                                <div class="card-body p-0">
+                                    <div class="row g-0">
+                                        <div class="col-md-8 p-5">
+                                            <h2 class="fw-bolder">@product.ProductName</h2>
+                                            <p>@product.Description</p>
+                                            <p><strong>Price:</strong> @product.Price</p>
+                                            <p>Category: @product.Category</p>
+                                            <p>Production Date: @product.productionDate.ToString("MM/dd/yyyy")</p>
+                                        </div>
+                                        <div class="col-md-4 d-flex align-items-center justify-content-center" style="height: 400px;">
+                                            <a href="data:image/jpeg;base64,@product.photo1" data-lightbox="@product.ProductId" data-title="@product.ProductName">
+                                                <img class="img-fluid" src="data:image/jpeg;base64,@product.photo1" alt="..." style="width: 300px; height: 400px; object-fit: cover;" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Edit and Delete Icons -->
+                               
+                                    <form method="post" asp-action="DeleteProduct" asp-controller="StaffDashboard" class="d-inline">
+                                        <input type="hidden" name="productId" value="@product.ProductId" />
+                                    <input type="hidden" name="UserId" value="@Model.User.UserId" />
+                                        <button type="submit" class="btn p-0 border-0 bg-transparent">
+                                            <img src="~/assets/icon_delete.png" alt="Delete Icon" width="20" height="20" />
+                                        </button>
+                                    </form>
+                                </div>
+
+
+
+                                @* Add hidden links for additional photos to be displayed in the Lightbox gallery *@
+                                @if (product.photo2 != null)
+                                {
+                                    <a href="data:image/jpeg;base64,@product.photo2" data-lightbox="@product.ProductId" data-title="@product.ProductName" class="d-none">
+                                        <img class="img-fluid w-100 h-100" src="data:image/jpeg;base64,@product.photo2" alt="..." style="object-fit: cover;" />
+                                    </a>
+                                }
+                                @if (product.photo3 != null)
+                                {
+                                    <a href="data:image/jpeg;base64,@product.photo3" data-lightbox="@product.ProductId" data-title="@product.ProductName" class="d-none">
+                                        <img class="img-fluid w-100 h-100" src="data:image/jpeg;base64,@product.photo3" alt="..." style="object-fit: cover;" />
+                                    </a>
+                                }
+                                @if (product.photo4 != null)
+                                {
+                                    <a href="data:image/jpeg;base64,@product.photo4" data-lightbox="@product.ProductId" data-title="@product.ProductName" class="d-none">
+                                        <img class="img-fluid w-100 h-100" src="data:image/jpeg;base64,@product.photo4" alt="..." style="object-fit: cover;" />
+                                    </a>
+                                }
+                                @if (product.photo5 != null)
+                                {
+                                    <a href="data:image/jpeg;base64,@product.photo5" data-lightbox="@product.ProductId" data-title="@product.ProductName" class="d-none">
+                                        <img class="img-fluid w-100 h-100" src="data:image/jpeg;base64,@product.photo5" alt="..." style="object-fit: cover;" />
+                                    </a>
+                                }
+
+
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Call to action section-->
+        <section class="py-5 bg-gradient-primary-to-secondary text-white">
+            <div class="container px-5 my-5">
+                <div class="text-center">
+                    <h2 class="display-4 fw-bolder mb-4">Let's build something together</h2>
+                    <a class="btn btn-outline-light btn-lg px-5 py-3 fs-6 fw-bolder" href="contact.html">Apply for a Farmer Profile Here</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer-->
+    <footer class="bg-white py-4 mt-auto">
+        <div class="container px-5">
+            <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                <div class="col-auto"><div class="small m-0">Copyright &copy; Your Website 2023</div></div>
+                <div class="col-auto">
+                    <a class="small" href="#!">Privacy</a>
+                    <span class="mx-1">&middot;</span>
+                    <a class="small" href="#!">Terms</a>
+                    <span class="mx-1">&middot;</span>
+                    <a class="small" href="#!">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox-plus-jquery.min.js"></script>
+
+</body>
+</html>
+
+
 
