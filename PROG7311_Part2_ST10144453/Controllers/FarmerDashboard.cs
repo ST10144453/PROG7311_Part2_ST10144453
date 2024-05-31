@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//-------00000000000000000000oooooooooooooooooooo..........Start of File..........oooooooooooooooooooo00000000000000000000------//
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PROG7311_Part2_ST10144453.Data;
 using PROG7311_Part2_ST10144453.Models.Domain;
@@ -6,15 +7,28 @@ using PROG7311_Part2_ST10144453.ViewModels;
 
 namespace PROG7311_Part2_ST10144453.Controllers
 {
+    //------------------------------....................FarmerDashboard Class....................------------------------------//
     public class FarmerDashboard : Controller
     {
+        //oooooooooo............Declarations............oooooooooo//
         private readonly Part2DbContext _context;
 
+        //............................................Constructor()............................................//
+        /// <summary>
+        /// Default constructor for the FarmerDashboard class.
+        /// </summary>
+        /// <param name="context"></param>
         public FarmerDashboard(Part2DbContext context)
         {
             _context = context;
         }
 
+        //............................................FarmerDash............................................//
+        /// <summary>
+        /// The FarmerDash action method is used to display the farmer dashboard.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<IActionResult> FarmerDash(Guid userId)
         {
             // Fetch the user from the database using the user's ID.
@@ -60,7 +74,12 @@ namespace PROG7311_Part2_ST10144453.Controllers
 
 
 
-
+        //............................................AddProduct............................................//
+        /// <summary>
+        /// The Add Product action method is used to display the form for adding a new product.
+        /// </summary>
+        /// <param name="farmerId"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult AddProduct(Guid farmerId)
         {
@@ -74,6 +93,13 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return View(product);
         }
 
+        //............................................AddProduct............................................//
+        /// <summary>
+        /// The Add Product action method is used to add a new product to the database.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="photos"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddProduct(Product product, List<IFormFile> photos)
         {
@@ -138,6 +164,12 @@ namespace PROG7311_Part2_ST10144453.Controllers
             }
         }
 
+        //............................................EditProduct............................................//
+        /// <summary>
+        /// The Edit Product action method is used to display the form for editing a product.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> FarmerSettings(Guid userId)
         {
@@ -159,8 +191,12 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return View(viewModel);
         }
 
-        
-
+        //............................................EditProduct............................................//
+        /// <summary>
+        /// The Edit Product action method is used to display the form for editing a product.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
 
         [HttpGet]
         public async Task<IActionResult> EditProduct(Guid productId)
@@ -179,6 +215,13 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return View(product);
         }
 
+        //............................................EditProduct............................................//
+        /// <summary>
+        /// The Edit Product action method is used to edit a product in the database.
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <param name="ProfilePhoto"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> FarmerSettings(EditFarmerProfileViewModel viewModel, IFormFile ProfilePhoto)
         {
@@ -244,7 +287,8 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return RedirectToAction("FarmerDash", new { userId = user.UserId });
         }
 
-
+        //............................................DeleteFarmer............................................//
+        // This method is used to delete a farmer from the database
         [HttpPost]
         public async Task<IActionResult> DeleteFarmer(Guid userId)
         {
@@ -268,7 +312,12 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        //............................................DeleteProduct............................................//
+        /// <summary>
+        /// This method is used to delete a product from the database.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(Guid productId)
         {
@@ -288,10 +337,7 @@ namespace PROG7311_Part2_ST10144453.Controllers
             // Redirect to the FarmerDash action
             return RedirectToAction("FarmerDash", new { userId = product.Farmer.UserID });
         }
-
-
-
-
     }
 
 }
+//-------00000000000000000000oooooooooooooooooooo..........End of File..........oooooooooooooooooooo00000000000000000000------//

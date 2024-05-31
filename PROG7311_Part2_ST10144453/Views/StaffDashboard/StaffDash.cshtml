@@ -41,6 +41,7 @@
 
         <section class="py-3">
             <div class="container px-5 mb-5">
+
                 <!-- Profile Card -->
                 <!-- Profile Card -->
                 <div class="card overflow-hidden shadow rounded-4 border-0 mb-5">
@@ -54,16 +55,7 @@
                             <h2 class="fw-bolder">@Model.User.Name @Model.User.Surname</h2>
                             <p><strong>Account Type:</strong> @Model.User.AccountType</p>
 
-
-                            <!-- Edit and Delete Icons -->
-                            <div class="position-absolute top-1 end-0 p-3">
-                                <form method="get" asp-action="StaffSettings" asp-controller="FarmerDashboard" class="d-inline">
-                                    <input type="hidden" name="userId" value="@Model.User.UserId" />
-                                    <button type="submit" class="btn p-0 border-0 bg-transparent">
-                                        <img src="~/assets/icon_edit.png" alt="Edit Icon" width="20" height="20" />
-                                    </button>
-                                </form>
-                                <form method="post" asp-action="DeleteFarmer" asp-controller="FarmerDashboard" class="d-inline">
+                                <form method="post" asp-action="DeleteFarmer" asp-controller="StaffDashboard" class="d-inline">
                                     <input type="hidden" name="userId" value="@Model.User.UserId" />
                                     <button type="submit" class="btn p-0 border-0 bg-transparent">
                                         <img src="~/assets/icon_delete.png" alt="Delete Icon" width="20" height="20" />

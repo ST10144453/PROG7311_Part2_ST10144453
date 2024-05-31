@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//-------00000000000000000000oooooooooooooooooooo..........Start of File..........oooooooooooooooooooo00000000000000000000------//
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PROG7311_Part2_ST10144453.Data;
 using PROG7311_Part2_ST10144453.Models;
@@ -7,15 +8,28 @@ using PROG7311_Part2_ST10144453.ViewModels;
 
 namespace PROG7311_Part2_ST10144453.Controllers
 {
+    //------------------------------....................Part2DbContext Class....................------------------------------//
     public class StaffDashboard : Controller
     {
+        //oooooooooo............Declarations............oooooooooo//
         private readonly Part2DbContext _context;
 
+        //............................................Constructor()............................................//
+        /// <summary>
+        /// The constructor for the StaffDashboard class.
+        /// </summary>
+        /// <param name="context"></param>
         public StaffDashboard(Part2DbContext context)
         {
             _context = context;
         }
 
+        //............................................StaffDash()............................................//
+        /// <summary>
+        /// The StaffDash action method for the StaffDashboard class.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> StaffDash(string email)
         {
@@ -47,6 +61,12 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return View(viewModel);
         }
 
+        //............................................DeleteFarmer()............................................//
+        /// <summary>
+        /// The DeleteFarmer action method for the StaffDashboard class.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteFarmer(Guid userId)
         {
@@ -70,7 +90,13 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        //............................................DeleteProduct()............................................//
+        /// <summary>
+        /// The DeleteProduct action method for the StaffDashboard class.
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(Guid UserId, Guid productId)
         {
@@ -100,96 +126,17 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return RedirectToAction("StaffDash", new { email = user.Email });
         }
 
-
+        //............................................AddFarmer()............................................//
+        /// <summary>
+        /// The AddFarmer action method for the StaffDashboard class.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult AddFarmer()
         {
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> StaffSettings(Guid userId)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
-            var staff = await _context.Staffs.FirstOrDefaultAsync(s => s.UserId == userId);
-
-            if (user == null || staff == null)
-            {
-                // Handle the case where the user or staff is not found
-                ViewBag.ErrorMessage = "User or Staff not found.";
-                return View("Error");
-            }
-
-            var viewModel = new EditStaffProfileViewModel
-            {
-                User = user,
-                Staff = staff
-            };
-
-            return View(viewModel);
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> StaffSettings(EditStaffProfileViewModel viewModel, IFormFile ProfilePhoto)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == viewModel.User.UserId);
-            var staff = await _context.Staffs.FirstOrDefaultAsync(s => s.UserId == viewModel.User.UserId);
-
-            if (ProfilePhoto != null && ProfilePhoto.Length > 0)
-            {
-                byte[] photoBytes;
-                using (var memoryStream = new MemoryStream())
-                {
-                    await ProfilePhoto.CopyToAsync(memoryStream);
-                    photoBytes = memoryStream.ToArray();
-                }
-
-                string photoBase64 = Convert.ToBase64String(photoBytes);
-                viewModel.User.ProfilePhoto = photoBase64;
-            }
-
-            if (!ModelState.IsValid)
-            {
-                foreach (var state in ModelState.Values)
-                {
-                    foreach (var error in state.Errors)
-                    {
-                        Console.WriteLine("ModelState Error: " + error.ErrorMessage);
-                    }
-                }
-                return View(viewModel);
-            }
-
-
-
-            if (user == null || staff == null)
-            {
-                ViewBag.ErrorMessage = "User or Farmer not found.";
-                return View("Error");
-            }
-
-            try
-            {
-                user.Name = viewModel.User.Name;
-                user.Surname = viewModel.User.Surname;
-                user.Email = viewModel.User.Email;
-                user.Password = viewModel.User.Password;
-                user.AccountType = viewModel.User.AccountType;
-                user.ProfilePhoto = viewModel.User.ProfilePhoto;
-
-                _context.Users.Update(user);
-                _context.Staffs.Update(staff);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return View(viewModel);
-            }
-
-            return RedirectToAction("StaffDash", new { email = user.Email });
-        }
-
     }
 }
+//-------00000000000000000000oooooooooooooooooooo..........End of File..........oooooooooooooooooooo00000000000000000000------//

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//-------00000000000000000000oooooooooooooooooooo..........Start of File..........oooooooooooooooooooo00000000000000000000------//
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using System;
@@ -10,23 +11,43 @@ using PROG7311_Part2_ST10144453.Models.Domain;
 
 namespace PROG7311_Part2_ST10144453.Controllers
 {
+    //------------------------------....................UserController Class....................------------------------------//
     public class UserController : Controller
     {
+        //oooooooooo............Declarations............oooooooooo//
         private readonly Part2DbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+        //............................................Constructor()............................................//
+        /// <summary>
+        /// The constructor for the UserController class.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="webHostEnvironment"></param>
         public UserController(Part2DbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
 
+        //............................................Add()............................................//
+        /// <summary>
+        /// The Add action method for the UserController class.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
+        //............................................Add()............................................//
+        /// <summary>
+        /// The Add action method for the UserController class.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="profilePhotoUpload"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Add(User user, IFormFile? profilePhotoUpload)
         {
@@ -113,6 +134,10 @@ namespace PROG7311_Part2_ST10144453.Controllers
             }
         }
 
+        //............................................LogModelStateErrors()............................................//
+        /// <summary>
+        /// The LogModelStateErrors method for the UserController class.
+        /// </summary>
         private void LogModelStateErrors()
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
@@ -122,6 +147,11 @@ namespace PROG7311_Part2_ST10144453.Controllers
             }
         }
 
+        //............................................SetDefaultProfilePhoto()............................................//
+        /// <summary>
+        /// The SetDefaultProfilePhoto method for the UserController class.
+        /// </summary>
+        /// <param name="user"></param>
         private void SetDefaultProfilePhoto(User user)
         {
             var defaultImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "Assets", "defaultPfp.png");
@@ -132,6 +162,12 @@ namespace PROG7311_Part2_ST10144453.Controllers
             }
         }
 
+        //............................................AddNewFarmer()............................................//
+        /// <summary>
+        /// The AddNewFarmer action method for the UserController class.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult AddNewFarmer(Guid userId)
         {
@@ -139,6 +175,12 @@ namespace PROG7311_Part2_ST10144453.Controllers
             return View();
         }
 
+        //............................................AddNewFarmer()............................................//
+        /// <summary>
+        /// The AddNewFarmer action method for the UserController class.
+        /// </summary>
+        /// <param name="farmer"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddNewFarmer(Farmer farmer)
         {
@@ -162,3 +204,4 @@ namespace PROG7311_Part2_ST10144453.Controllers
         }
     }
 }
+//-------00000000000000000000oooooooooooooooooooo..........End of File..........oooooooooooooooooooo00000000000000000000------//
